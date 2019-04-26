@@ -4,7 +4,7 @@
 # epsilon = referência para encerrar o algoritmo, ex: epsilon = 10^-5
 # h1 = canal rgb img1
 # h2 = canal rgb img2
-function L = simulated_annealing(s0, t0, epsilon, h1, h2)
+function L = simulated_annealing(s0, t0, epsilon, im1, im2)
   i = 0;
   s = s0;
   t = t0;
@@ -13,10 +13,10 @@ function L = simulated_annealing(s0, t0, epsilon, h1, h2)
     disp(t);
     t = updateTemperature(t0, i);
     sn = randomNeighbor(s);
-    ls = imhist(xau(s,h1));
-    lsn = imhist(xau(sn,h1));
-    es = D(ls, h2);
-    esn = D(lsn, h2);
+    ls = xau(s,im1);
+    lsn = xau(sn,im1);
+    es = D(ls, im2);
+    esn = D(lsn, im2);
     %difference = esn - es;
     if(esn < es)
       s = sn;
