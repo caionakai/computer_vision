@@ -11,5 +11,5 @@ function retorno = xau(s, histog)
     endif
   endfor
   #retorno = imhist(histog(h2));
-  retorno = h2(histog+1);
+  retorno = uint8(h2(histog+1));
 endfunction

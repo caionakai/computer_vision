@@ -35,19 +35,19 @@ b_2 = xau(histfinal3, b_img1);
 
 img = cat(3, r_2, g_2, b_2);
 
-r_2 = xau(histfinal, r_final);
-g_2 = xau(histfinal2, g_final);
-b_2 = xau(histfinal3, b_final);
+#r_2 = xau(histfinal, r_final);
+#g_2 = xau(histfinal2, g_final);
+#b_2 = xau(histfinal3, b_final);
 #figure, plot(imhist(r_2), c="g");
 %g_2 = calculatesTable(histfinal2, g_img1);
 %b_2 = calculatesTable(histfinal3, b_img1);
 
-resultfinal = cat(3, r_2, g_2, b_2);
+#resultfinal = cat(3, r_2, g_2, b_2);
 
 figure, imshow(image2);
-figure, imshow(img);
-figure, imshow(final);
-figure, imshow(resultfinal);
+imwrite(img, "DEMONIODOGASOCULTO.png");
+#figure, imshow(final);
+#figure, imshow(resultfinal);
 
 %figure, plot(histfinal, c="b");
 
