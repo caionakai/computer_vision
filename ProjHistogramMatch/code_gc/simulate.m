@@ -2,11 +2,10 @@
 function end_point = simulate(start_point, chanel1,chanel2)
   
   n_cycles = 50;
-  m_trials_per_cycle = 10;
+  m_trials_per_cycle = 50;
   n_accepted_solution = 0.0;
   p_accept_worse_start = 0.7;  
   p_accept_worse_end = 0.001;
-  change_index = 2;% altera apenas o ponto do meio
   
   t_initial = -1.0/log(p_accept_worse_start);  
   t_final = -1.0/log(p_accept_worse_end);
@@ -23,13 +22,15 @@ function end_point = simulate(start_point, chanel1,chanel2)
   
   for i=1:n_cycles
     for j=1:m_trials_per_cycle
-      current_point = change_point(best_point, change_index);
+      current_point = change_point(best_point, 1);
+  	  current_point = change_point(current_point, 2);
+  	  current_point = change_point(current_point, 3);
       
       fraction_current = D(h(transform(current_point, chanel1)), h(chanel2));
       
       DeltaE = abs(fraction_current - fraction_best);
       accept = 1;
-      if(fraction_current > fraction_best)
+      if(fraction_current < fraction_best)
         if(i==1 && j==1)
           DeltaE_avg = DeltaE;
         end
