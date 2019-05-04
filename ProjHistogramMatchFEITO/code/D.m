@@ -13,7 +13,7 @@ function retorno = D(chan1, chan2)
   counts2 = counts2/(x*y);
 
   retorno = 0;
-  for i = 1:255 
+  for i = 1:256 
     retorno = retorno + (counts2(i) - counts(i))^2;
   endfor
   

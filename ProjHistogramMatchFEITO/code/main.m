@@ -22,18 +22,30 @@ g_final = im2uint8(final(:,:,2));
 b_final = im2uint8(final(:,:,3));
 
 
-s0 = [[5,2];[128,128];[250,250]];
+s0 = [[1,1];[128,128];[255,255]];
 #figure, plot(imhist(r_img1), c="r");
-histfinal = simulated_annealing(s0, 0.1, 0.00001, r_img2, r_img1);
-histfinal2 = simulated_annealing(s0, 0.1, 0.00001, g_img2, g_img1);
-histfinal3 = simulated_annealing(s0, 0.1, 0.00001, b_img2, b_img1);
+histfinal = simulated_annealing(s0, 0.01, 0.00001, r_img2, r_img1);
+#histfinal2 = simulated_annealing(s0, 0.01, 0.00001, g_img2, g_img1);
+#histfinal3 = simulated_annealing(s0, 0.01, 0.00001, b_img2, b_img1);
+
+#kerove = xau([[1,1];[128,128];[256,256]], r_img2);
+#taota = xau([[1,1];[179,134];[256,256]], r_img2);
+
+# teste plotando os histogramas
+#figure, plot(imhist(r_img1), c="r");
+#figure, plot(imhist(kerove), c="r");
+#figure, plot(imhist(taota), c="r");
+#figure, plot(imhist(r_img1), c="r");
+
+#diferencabaixa = D(taota,r_img1)
+#diferenalta = D(kerove,r_img1)
 
 #figure, plot(imhist(r_img2), c="g");
-r_2 = xau(histfinal, r_img2);
-g_2 = xau(histfinal2, g_img2);
-b_2 = xau(histfinal3, b_img2);
+rnovo_2 = xau(histfinal, r_img2);
+#g_2 = xau(histfinal2, g_img2);
+#b_2 = xau(histfinal3, b_img2);
 
-img = cat(3, r_2, g_2, b_2);
+img = cat(3, rnovo_2, g_img2, b_img2);
 
 #r_2 = xau(histfinal, r_final);
 #g_2 = xau(histfinal2, g_final);
@@ -43,7 +55,7 @@ img = cat(3, r_2, g_2, b_2);
 
 #resultfinal = cat(3, r_2, g_2, b_2);
 
-imwrite(img, "DEMONIODOGASOCULTO.png");
+imwrite(img, "nande.png");
 
 
 

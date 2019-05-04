@@ -8,21 +8,39 @@ function L = simulated_annealing(s0, t0, epsilon, im1, im2)
   i = 0;
   s = s0;
   t = t0;
-  
+  k = 0;
   while(t>epsilon)
     disp(t);
-    t = updateTemperature(t0, i);
-    sn = randomNeighbor(s);
+    if(k>=100)
+      t = updateTemperature(t0, i);
+      k=0;
+    endif      
+    sn = vizinho(s);
     ls = xau(s,im1);
     lsn = xau(sn,im1);
     es = D(ls, im2);
     esn = D(lsn, im2);
-    %difference = esn - es;
-    if(esn < es)
+    dif = esn - es;
+    p = 0;
+    #if(dif < 0)
+    #  s = sn;
+    #  s
+    #endif
+    # entra aqui se for melhor
+    if(dif < 0)
+      disp("eh melhor");
+      p = 1;
+    else
+    #  disp("achei um pior");
+      p = exp(-(dif)/t);
+    endif
+    q = rand();
+    if(q < p)
+      sn
       s = sn;
-      s
     endif
     i = i+1;
+    k = k+1;
   endwhile
   L = s;
 endfunction
