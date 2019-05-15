@@ -17,7 +17,6 @@
 %   standard SIFT)
 
 function [features] = get_features(image, x, y, descriptor_window_image_width)
-
 % To start with, you might want to simply use normalized patches as your
 % local feature. This is very simple to code and works OK. However, to get
 % full credit you will need to implement the more effective SIFT descriptor
@@ -54,9 +53,40 @@ function [features] = get_features(image, x, y, descriptor_window_image_width)
 % Another simple trick which can help is to raise each element of the final
 % feature vector to some power that is less than one.
 
+dwiw = int32(descriptor_window_image_width/2);
+
+
+tamanho = length(x);
+count = 1;
+for i = 1:tamanho
+  ax = x(i)
+  ay = y(i)
+  
+  % teoricamente pega a janela 16x16 deslocado com o centro deslocado pra direita
+  submatrix(:,:,count) = image(ax-dwiw:ax+dwiw-1, ay-dwiw:ay+dwiw-1);
+  count++;
+endfor
+
+% pega a quantidade de submatrix 16x16
+j = size(submatrix,3);
+% itera sobre as submatrix 16x16 para calcular as 4x4
+% as milhares de matrizes 16x16 estao em dezesseis_matrices(:,:,:, {1,2,3,...})
+for w = 1:j
+  temp = submatrix(:,:,w);  
+  dezesseis_matrices(:,:,:,w) = asd(temp)
+  for p=1:16
+    quatro=dezesseis_matrices(:,:,p,w);
+    grad, direc = calcula_gradient_direction(quatro);
+  endfor
+  
+endfor
+
+% esse tam tem que ter 16 
+%tam = size(dezesseis_matrices, 3)
+
+
 %Placeholder that you can delete. Empty features.
 features = zeros(size(x,1), 128, 'single');
-
 
 
 end

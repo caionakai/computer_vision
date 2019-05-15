@@ -1,4 +1,5 @@
 function accuracy = proj3()
+  pkg load image;
 % Local Feature Stencil Code
 % Written by James Hays for CS 143 @ Brown / CS 4476/6476 @ Georgia Tech
 % Edited by James Tompkin
@@ -11,7 +12,7 @@ function accuracy = proj3()
 
 
 %% Define image pairs
-imagePair = 1;
+imagePair = 2;
 if imagePair == 1
     % Notre Dame de Paris
     % Easiest
@@ -29,7 +30,7 @@ elseif imagePair == 3
     % This pair is difficult
     image1 = imread('../data/EpiscopalGaudi/4386465943_8cf9776378_o.jpg');
     image2 = imread('../data/EpiscopalGaudi/3743214471_1b5bbfda98_o.jpg');
-    eval_file = '../data/EpiscopalGaudi/4386465943_8cf9776378_o_to_3743214471_1b5bbfda98_o.mat';
+    %eval_file = '../data/EpiscopalGaudi/4386465943_8cf9776378_o_to_3743214471_1b5bbfda98_o.mat';
 end
 
 %% Load images
@@ -44,11 +45,13 @@ image2g = rgb2gray(image2);
 
 %% Compute correspondences
 % YOUR WORK IN HERE!
-[x1, y1, x2, y2, matches, confidences] = compute_correspondences( image1g, image2g );
+[x1, y1, x2, y2, matches, confidences] = compute_correspondences( image1g, image2g, eval_file, scale_factor );
 
+
+% comentado daqui p baixo para development
 
 %% Visualization
-num_pts_to_visualize = size(matches,1);
+%num_pts_to_visualize = size(matches,1);
 % Feel free to set this to some constant (e.g., 100) once you start 
 % detecting hundreds of interest points.
 % You could also threshold based on confidence.
@@ -56,15 +59,15 @@ num_pts_to_visualize = size(matches,1);
 % You may also switch to a different visualization method, by passing
 % 'arrows' into show_correspondence instead of 'dots'.
 % e.g., 'arrows', 'vis_arrows.png'
-show_correspondence(image1, image2, x1(matches(1:num_pts_to_visualize,1)), ...
-                                     y1(matches(1:num_pts_to_visualize,1)), ...
-                                     x2(matches(1:num_pts_to_visualize,2)), ...
-                                     y2(matches(1:num_pts_to_visualize,2)), ...
-                                 'dots', 'vis_dots.png');
+%show_correspondence(image1, image2, x1(matches(1:num_pts_to_visualize,1)), ...
+%                                     y1(matches(1:num_pts_to_visualize,1)), ...
+%                                     x2(matches(1:num_pts_to_visualize,2)), ...
+%                                     y2(matches(1:num_pts_to_visualize,2)), ...
+%                                 'dots', 'vis_dots.png');
 
                              
 %% Evaluation
-num_pts_to_evaluate = size(matches,1);
+%num_pts_to_evaluate = size(matches,1);
 % Again, feel free to set this to some constant (e.g., 100) 
 % once you start detecting hundreds of interest points.
 % You could also threshold based on confidence.
@@ -74,11 +77,11 @@ num_pts_to_evaluate = size(matches,1);
 % have ground truth for evaluation.
 % You can use collect_ground_truth_corr.m to build ground truth for 
 % other image pairs, but it's tedious.
-[numGoodMatches,numBadMatches,precision,accuracy100] = evaluate_correspondence(image1, image2, eval_file, scale_factor, ... 
-                        x1(matches(1:num_pts_to_evaluate,1)), ...
-                        y1(matches(1:num_pts_to_evaluate,1)), ...
-                        x2(matches(1:num_pts_to_evaluate,2)), ...
-                        y2(matches(1:num_pts_to_evaluate,2)), ...
-                        true ); % Visualize/write result
+%[numGoodMatches,numBadMatches,precision,accuracy100] = evaluate_correspondence(image1, image2, eval_file, scale_factor, ... 
+%                        x1(matches(1:num_pts_to_evaluate,1)), ...
+%                        y1(matches(1:num_pts_to_evaluate,1)), ...
+%                        x2(matches(1:num_pts_to_evaluate,2)), ...
+%                        y2(matches(1:num_pts_to_evaluate,2)), ...
+%                        true ); % Visualize/write result
 
 end
