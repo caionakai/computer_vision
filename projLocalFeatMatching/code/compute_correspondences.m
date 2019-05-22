@@ -29,7 +29,7 @@ descriptor_window_image_width = 16;
 %% 3) Match features. Szeliski 4.1.3
 % !!! You will need to implement match_features. !!!
 % caio comentou aqui
-%[matches, confidences] = match_features(image1_features, image2_features);
+[matches, confidences] = match_features(image1_features, image2_features);
 
 end
 

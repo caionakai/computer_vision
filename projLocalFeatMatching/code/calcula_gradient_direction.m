@@ -5,5 +5,6 @@ function [gradient, direction] = calcula_gradient_direction(grid)
   gy = imfilter(grid, sobel'); % aplica o sobel na vertical
 
   gradient = hypot(gx,gy); % calcula o gradiente para cada um dos elementos
-  direction = atan2(gy,gx); % calcula a direção do gradiente
+  %direction = atan2(gy,gx); % calcula a direção do gradiente
+  direction = atan2d(gy,gx); % calcula em graus
 endfunction

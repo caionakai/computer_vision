@@ -59,11 +59,11 @@ dwiw = int32(descriptor_window_image_width/2);
 tamanho = length(x);
 count = 1;
 for i = 1:tamanho
-  ax = x(i)
-  ay = y(i)
+  ax = x(i);
+  ay = y(i);
   
   % teoricamente pega a janela 16x16 deslocado com o centro deslocado pra direita
-  submatrix(:,:,count) = image(ax-dwiw:ax+dwiw-1, ay-dwiw:ay+dwiw-1);
+  submatrix(:,:,count) = image(int32(ay-dwiw):int32(ay+dwiw-1), int32(ax-dwiw):int32(ax+dwiw-1));
   count++;
 endfor
 
@@ -71,22 +71,26 @@ endfor
 j = size(submatrix,3);
 % itera sobre as submatrix 16x16 para calcular as 4x4
 % as milhares de matrizes 16x16 estao em dezesseis_matrices(:,:,:, {1,2,3,...})
+
 for w = 1:j
   temp = submatrix(:,:,w);  
-  dezesseis_matrices(:,:,:,w) = asd(temp)
+  dezesseis_matrices(:,:,:,w) = asd(temp);
+  a128 = [];
   for p=1:16
     quatro=dezesseis_matrices(:,:,p,w);
-    grad, direc = calcula_gradient_direction(quatro);
+    [grad, direc] = calcula_gradient_direction(quatro);
+    a128 = [a128, histogram_8bin(grad,direc)];
   endfor
-  
+  features(w,:) = a128;
 endfor
+size(features)
 
 % esse tam tem que ter 16 
 %tam = size(dezesseis_matrices, 3)
 
 
 %Placeholder that you can delete. Empty features.
-features = zeros(size(x,1), 128, 'single');
+%features = zeros(size(x,1), 128, 'single');
 
 
 end
