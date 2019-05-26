@@ -1,5 +1,7 @@
 function accuracy = proj3()
   pkg load image;
+  pkg load statistics;
+  
 % Local Feature Stencil Code
 % Written by James Hays for CS 143 @ Brown / CS 4476/6476 @ Georgia Tech
 % Edited by James Tompkin

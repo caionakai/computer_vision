@@ -33,18 +33,27 @@ function [matches, confidences] = match_features(features1, features2)
 % Placeholder that you can delete. Random matches and confidences
 num_features = min(size(features1, 1), size(features2,1));
 
+
+k = 1;
 # euclidean distance
 for i=1:num_features
   for j = 1:num_features
-    euclideanDistance(i,j) = sqrt(sum(features1(i) - features2(j)).^2);
+    %euclideanDistance(i,j) = sqrt(sum(features1(i) - features2(j)).^2);
+    euclideanDistance(i,j) = pdist2(features1(i),features2(j));
   endfor
   % sort the euclideanDistances
   [sorted_euclidean_distance(i,:), sort_index(i,:)] = sort(euclideanDistance(i,:));
   % nndr = d1/d2 (Szeliski 4.18)
-  %confidences(i) = sorted_euclidean_distance(i,1)/sorted_euclidean_distance(i,2);
-  confidences(i,:) = sorted_euclidean_distance(i,:);
-  matches(i,1) = i;
-  matches(i,2) = sort_index(i,1);
+  i
+  if sorted_euclidean_distance(i,1)/sorted_euclidean_distance(i,2) < 0.5
+    confidences(k) = sorted_euclidean_distance(i,1);
+    matches(k,1) = i;
+    matches(k,2) = sort_index(i,1);
+    k++;
+  endif
+
+  %confidences(i) = sorted_euclidean_distance(i,1);
+  
 endfor
 
 

@@ -63,7 +63,7 @@ for i = 1:tamanho
   ay = y(i);
   
   % teoricamente pega a janela 16x16 deslocado com o centro deslocado pra direita
-  submatrix(:,:,count) = image(int32(ay-dwiw):int32(ay+dwiw-1), int32(ax-dwiw):int32(ax+dwiw-1));
+  submatrix(:,:,count) = image(int32(ay-dwiw-1):int32(ay+dwiw), int32(ax-dwiw-1):int32(ax+dwiw));
   count++;
 endfor
 
