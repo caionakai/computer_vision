@@ -20,11 +20,19 @@ descriptor_window_image_width = 16;
 % % Use cheat_interest_points only for development and debugging!
 [x1, y1, x2, y2] = cheat_interest_points(eval_file, scale_factor);
 
-%% 2) Create feature vectors at each interest point. Szeliski 4.1.2
-% !!! You will need to implement get_features. !!!
-[image1_features] = get_features(image1, x1, y1, descriptor_window_image_width);
-[image2_features] = get_features(image2, x2, y2, descriptor_window_image_width);
+if (exist("imgfeat1.mat")==0)
+  %% 2) Create feature vectors at each interest point. Szeliski 4.1.2
+  % !!! You will need to implement get_features. !!!
+  [image1_features] = get_features(image1, x1, y1, descriptor_window_image_width);
+  [image2_features] = get_features(image2, x2, y2, descriptor_window_image_width);
 
+  save imgfeat1.mat image1_features;
+  save imgfeat2.mat image2_features;
+
+else
+  load imgfeat1.mat
+  load imgfeat2.mat
+endif
 
 %% 3) Match features. Szeliski 4.1.3
 % !!! You will need to implement match_features. !!!

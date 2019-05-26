@@ -47,7 +47,6 @@ image2g = rgb2gray(image2);
 % YOUR WORK IN HERE!
 [x1, y1, x2, y2, matches, confidences] = compute_correspondences( image1g, image2g, eval_file, scale_factor );
 
-
 % comentado daqui p baixo para development
 
 %% Visualization
