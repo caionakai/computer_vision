@@ -61,29 +61,42 @@ count = 1;
 for i = 1:tamanho
   ax = x(i);
   ay = y(i);
-  
-  % teoricamente pega a janela 16x16 deslocado com o centro deslocado pra direita
-  submatrix(:,:,count) = image(int32(ay-dwiw-1):int32(ay+dwiw), int32(ax-dwiw-1):int32(ax+dwiw));
-  count++;
+  if(ay-dwiw-1 > 0 && ax-dwiw-1 > 0)
+    % pega a janela 16x16 deslocado com o centro deslocado pra esquerda
+    submatrix(:,:,count) = image(int32(ay-dwiw-1):int32(ay+dwiw), int32(ax-dwiw-1):int32(ax+dwiw));
+    image(int32(ay-dwiw-1):int32(ay+dwiw), int32(ax-dwiw-1):int32(ax+dwiw)) = 0;
+    count++;
+  endif
 endfor
+
+imwrite(image, "teste2.png");
+
 
 % pega a quantidade de submatrix 16x16
 j = size(submatrix,3);
-% itera sobre as submatrix 16x16 para calcular as 4x4
-% as milhares de matrizes 16x16 estao em dezesseis_matrices(:,:,:, {1,2,3,...})
 
+% itera sobre as submatrix 16x16 para calcular as 4x4
+% as matrizes 16x16 estao em dezesseis_matrices(:,:,:, {1,2,3,...})
 for w = 1:j
-  temp = submatrix(:,:,w);  
+  temp = submatrix(:,:,w); 
+  % divide a matriz 16x16 em 16 4x4 
   dezesseis_matrices(:,:,:,w) = asd(temp);
   a128 = [];
   for p=1:16
+    % pega uma unica matriz 4x4
     quatro=dezesseis_matrices(:,:,p,w);
+    % calcula a direcao e o gradiente para matriz 4x4
     [grad, direc] = calcula_gradient_direction(quatro);
+    
+    % append do histograma de 8 bin no vetor de features
     a128 = [a128, histogram_8bin(grad,direc)];
   endfor
+  % tentativa de normalizacao que nao deu certo
+  %a128 = a128/max(a128);
+  %a128(a128>0.2)=0.2;
+  %a128=a128*5;
   features(w,:) = a128;
 endfor
-size(features)
 
 % esse tam tem que ter 16 
 %tam = size(dezesseis_matrices, 3)

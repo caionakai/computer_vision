@@ -21,14 +21,6 @@ function [matches, confidences] = match_features(features1, features2)
 % section 4.1.3 of Szeliski. For extra credit you can implement various
 % forms of spatial verification of matches.
 
-%a = features1';
-%b = features2;
-
-%c = a*b;
-%c(1:5,1:5)
-
-
-
 
 % Placeholder that you can delete. Random matches and confidences
 num_features = min(size(features1, 1), size(features2,1));
@@ -38,21 +30,20 @@ k = 1;
 # euclidean distance
 for i=1:num_features
   for j = 1:num_features
-    %euclideanDistance(i,j) = sqrt(sum(features1(i) - features2(j)).^2);
-    euclideanDistance(i,j) = pdist2(features1(i),features2(j));
+    % distancia euclidiana entre uma feature e todas as outras da outra imagem
+    euclideanDistance(i,j) = sum(sqrt(((features1(i,:) - features2(j,:)).^2)));
   endfor
   % sort the euclideanDistances
   [sorted_euclidean_distance(i,:), sort_index(i,:)] = sort(euclideanDistance(i,:));
   % nndr = d1/d2 (Szeliski 4.18)
-  i
-  if sorted_euclidean_distance(i,1)/sorted_euclidean_distance(i,2) < 0.5
+  value = sorted_euclidean_distance(i,1)/sorted_euclidean_distance(i,2);
+  if sorted_euclidean_distance(i,1)/sorted_euclidean_distance(i,2) < 0.9
     confidences(k) = sorted_euclidean_distance(i,1);
+    %confidences(k) = value;
     matches(k,1) = i;
     matches(k,2) = sort_index(i,1);
     k++;
   endif
-
-  %confidences(i) = sorted_euclidean_distance(i,1);
   
 endfor
 
@@ -65,5 +56,6 @@ endfor
 % Sort the matches so that the most confident onces are at the top of the
 % list. You should not delete this, so that the evaluation
 % functions can be run on the top matches easily.
+
 [confidences, ind] = sort(confidences, 'descend');
 matches = matches(ind,:);

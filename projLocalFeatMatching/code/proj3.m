@@ -32,7 +32,7 @@ elseif imagePair == 3
     % This pair is difficult
     image1 = imread('../data/EpiscopalGaudi/4386465943_8cf9776378_o.jpg');
     image2 = imread('../data/EpiscopalGaudi/3743214471_1b5bbfda98_o.jpg');
-    %eval_file = '../data/EpiscopalGaudi/4386465943_8cf9776378_o_to_3743214471_1b5bbfda98_o.mat';
+    eval_file = '../data/EpiscopalGaudi/4386465943_8cf9776378_o_to_3743214471_1b5bbfda98_o.mat';
 end
 
 %% Load images
