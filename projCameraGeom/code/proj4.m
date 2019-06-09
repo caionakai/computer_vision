@@ -9,15 +9,16 @@
 
 clear
 close all
-pkg load image;
+run('lib/vlfeat-0.9.20/toolbox/vl_setup');
+%pkg load image;
 
 % This Mount Rushmore pair is easy. Most of the initial matches are
 % correct. The base fundamental matrix estimation without coordinate
 % normalization will work fine with RANSAC.
-pic_a = imread('../data/Mount Rushmore/9193029855_2c85a50e91_o.jpg');
-pic_b = imread('../data/Mount Rushmore/7433804322_06c5620f13_o.jpg');
-pic_a = imresize(pic_a, 0.25, 'bilinear');
-pic_b = imresize(pic_b, 0.37, 'bilinear');
+% pic_a = imread('../data/Mount Rushmore/9193029855_2c85a50e91_o.jpg');
+% pic_b = imread('../data/Mount Rushmore/7433804322_06c5620f13_o.jpg');
+% pic_a = imresize(pic_a, 0.25, 'bilinear');
+% pic_b = imresize(pic_b, 0.37, 'bilinear');
 
 % % The Notre Dame pair is difficult because the keypoints are largely on the
 % % same plane. Still, even an inaccurate fundamental matrix can do a pretty
@@ -39,10 +40,10 @@ pic_b = imresize(pic_b, 0.37, 'bilinear');
 % % This pair of photos has a clearer relationship between the cameras (they
 % % are converging and have a wide baseine between them) so the estimated
 % % fundamental matrix is less ambiguous.
-% pic_a = imread('../data/Woodruff Dorm/wood1.jpg');
-% pic_b = imread('../data/Woodruff Dorm/wood2.jpg');
-% pic_a = imresize(pic_a, 0.65, 'bilinear');
-% pic_b = imresize(pic_b, 0.65, 'bilinear');
+pic_a = imread('../data/Woodruff Dorm/wood1.jpg');
+pic_b = imread('../data/Woodruff Dorm/wood2.jpg');
+pic_a = imresize(pic_a, 0.65, 'bilinear');
+pic_b = imresize(pic_b, 0.65, 'bilinear');
 
 % % The Sydney Opera House
 % pic_a = imread('../data/Opera House/frame24.jpg');
@@ -66,5 +67,5 @@ show_correspondence2(pic_a, pic_b, matched_points_a(:,1), matched_points_a(:,2),
 draw_epipolar_lines(F_matrix, pic_a, pic_b, matched_points_a, matched_points_b);
 
 % %optional - re estimate the fundamental matrix using ALL the inliers.
-% [ F_matrix ] = estimate_fundamental_matrix(matched_points_a, matched_points_b);
-% draw_epipolar_lines(F_matrix, pic_a, pic_b, matched_points_a, matched_points_b);
+[ F_matrix ] = estimate_fundamental_matrix(matched_points_a, matched_points_b);
+draw_epipolar_lines(F_matrix, pic_a, pic_b, matched_points_a, matched_points_b);

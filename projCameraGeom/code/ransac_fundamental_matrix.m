@@ -21,38 +21,46 @@
 % right images.
 
 function [ Best_Fmatrix, inliers_a, inliers_b] = ransac_fundamental_matrix(matches_a, matches_b)
+    %%%%%%%%%%%%%%%%
+    % Your code here
+    %%%%%%%%%%%%%%%%
+    inliers_a = [0,0];
 
+    sampled_points = 8;
+    threshold = 0.5;
+    max_points_size = size(matches_a, 1);
+    p = 0.99;
+    outlier_ratio = 0.5;
+    number_of_iterations = log(1 - p) / log(1-(1 - outlier_ratio) ^ sampled_points);
 
-%%%%%%%%%%%%%%%%
-% Your code here
-%%%%%%%%%%%%%%%%
+    for i = 1:number_of_iterations
+      random_points = randperm(max_points_size, sampled_points);
 
+      points_random_a  = matches_a(random_points, :);
+      points_random_b  = matches_b(random_points, :);
 
-sampled_points = 9;
-threshold = 0.5;
-max_points_size = size(matches_a);
-p = 0.99;
-outlier_ratio = 0.5;
-number_of_iterations = log(1 - p) / log(1-(1 - outlier_ratio) ^ sampled_points);
+      Temp_Fmatrix = estimate_fundamental_matrix(points_random_a, points_random_b);
+      inliers = zeros(max_points_size,1);
+      for j = 1:max_points_size
+          matrix_A = [matches_a(j,:), 1]';
+          matrix_B = [matches_b(j,:), 1];
+          distance = matrix_B * Temp_Fmatrix * matrix_A;
 
-for i = 1:number_of_iterations
-  random_points = randsample(max_points_size, sampled_points);
-  
-  points_random_a  = matches_a(1:random_points, :);
-  points_random_b  = matches_b(1:random_points, :);
-  
-  Temp_Fmatrix = estimate_fundamental_matrix(points_random_a, points_random_b);
-  
-  
-endfor
+          if distance < threshold
+              inliers(j) = 1;
+          end
 
-% Your ransac loop should contain a call to 'estimate_fundamental_matrix()'
+      end
 
-%placeholders, you can delete all of this
-Best_Fmatrix = estimate_fundamental_matrix(matches_a(1:10,:), matches_b(1:10,:));
-inliers_a = matches_a(1:30,:);
-inliers_b = matches_b(1:30,:);
+      if sum(inliers) > size(inliers_a,1)
+        Best_Fmatrix = Temp_Fmatrix;
+        inliers_a = matches_a(find(inliers),:);
+        inliers_b = matches_b(find(inliers),:);
+      end
+    end
 
-
+%     Best_Fmatrix = estimate_fundamental_matrix(matches_a(1:10,:), matches_b(1:10,:));
+%     inliers_a = matches_a(1:30,:);
+%     inliers_b = matches_b(1:30,:);
 end
 

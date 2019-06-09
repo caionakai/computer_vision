@@ -11,7 +11,6 @@
 % vl_sift() input.
 
 function [ Points_2D_pic_a, Points_2D_pic_b ] = sift_wrapper( pic_a, pic_b )
-    pkg load image;
 
     pic_a = single(rgb2gray(pic_a));
     pic_b = single(rgb2gray(pic_b));
