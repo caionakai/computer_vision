@@ -27,6 +27,25 @@ function [ Best_Fmatrix, inliers_a, inliers_b] = ransac_fundamental_matrix(match
 % Your code here
 %%%%%%%%%%%%%%%%
 
+
+sampled_points = 9;
+threshold = 0.5;
+max_points_size = size(matches_a);
+p = 0.99;
+outlier_ratio = 0.5;
+number_of_iterations = log(1 - p) / log(1-(1 - outlier_ratio) ^ sampled_points);
+
+for i = 1:number_of_iterations
+  random_points = randsample(max_points_size, sampled_points);
+  
+  points_random_a  = matches_a(1:random_points, :);
+  points_random_b  = matches_b(1:random_points, :);
+  
+  Temp_Fmatrix = estimate_fundamental_matrix(points_random_a, points_random_b);
+  
+  
+endfor
+
 % Your ransac loop should contain a call to 'estimate_fundamental_matrix()'
 
 %placeholders, you can delete all of this
