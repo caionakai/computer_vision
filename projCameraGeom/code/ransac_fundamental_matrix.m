@@ -27,13 +27,13 @@ function [ Best_Fmatrix, inliers_a, inliers_b] = ransac_fundamental_matrix(match
     inliers_a = [0,0];
 
     sampled_points = 8;
-    threshold = 0.01;
+    threshold = 0.001;
     max_points_size = size(matches_a, 1);
     p = 0.99;
     outlier_ratio = 0.3;
     number_of_iterations = log(1 - p) / log(1-(1 - outlier_ratio) ^ sampled_points);
 
-    for i = 1:1000
+    for i = 1:20000
       random_points = randperm(max_points_size, sampled_points);
       
 

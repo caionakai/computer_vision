@@ -23,10 +23,10 @@ run('lib/vlfeat-0.9.20/toolbox/vl_setup');
 % % The Notre Dame pair is difficult because the keypoints are largely on the
 % % same plane. Still, even an inaccurate fundamental matrix can do a pretty
 % % good job of filtering spurious matches.
-pic_a = imread('../data/Notre Dame/921919841_a30df938f2_o.jpg');
-pic_b = imread('../data/Notre Dame/4191453057_c86028ce1f_o.jpg');
-pic_a = imresize(pic_a, 0.5, 'bilinear');
-pic_b = imresize(pic_b, 0.5, 'bilinear');
+% pic_a = imread('../data/Notre Dame/921919841_a30df938f2_o.jpg');
+% pic_b = imread('../data/Notre Dame/4191453057_c86028ce1f_o.jpg');
+% pic_a = imresize(pic_a, 0.5, 'bilinear');
+% pic_b = imresize(pic_b, 0.5, 'bilinear');
 
 % % The Gaudi pair doesn't find many correct matches unless you run at high
 % % resolution, but that will lead to tens of thousands of sift features
@@ -46,10 +46,10 @@ pic_b = imresize(pic_b, 0.5, 'bilinear');
 % pic_b = imresize(pic_b, 0.65, 'bilinear');
 
 % % The Sydney Opera House
-% pic_a = imread('../data/Opera House/frame24.jpg');
-% pic_b = imread('../data/Opera House/frame27.jpg');
-% pic_a = imresize(pic_a, 0.25, 'bilinear');
-% pic_b = imresize(pic_b, 0.30, 'bilinear');
+pic_a = imread('../data/Opera House/frame24.jpg');
+pic_b = imread('../data/Opera House/frame27.jpg');
+pic_a = imresize(pic_a, 0.25, 'bilinear');
+pic_b = imresize(pic_b, 0.30, 'bilinear');
 
 % Finds matching points in the two images using VLFeat's implementation of
 % SIFT (basically project 3). There can still be many spurious matches,
