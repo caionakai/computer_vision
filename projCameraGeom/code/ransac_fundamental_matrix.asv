@@ -20,51 +20,84 @@
 % lines, you may want to return no more than 30 points for either left or
 % right images.
 
-function [ Best_Fmatrix, inliers_a, inliers_b] = ransac_fundamental_matrix(matches_a, matches_b)
-    %%%%%%%%%%%%%%%%
-    % Your code here
-    %%%%%%%%%%%%%%%%
+function [ Best_Fmatrix, inliers_a, inliers_b] = ransac_fundamental_matrix(matches_a, matches_b)    
+    % declaracao da matriz de inliers para executar o if no primeiro caso
     inliers_a = [0,0];
-
+    
+    % quantidade de pontos aleatorios que serao utilizados
     sampled_points = 8;
-    threshold = 0.01;
+    
+    % limite escolhido empiricamente
+    threshold = 0.001;
+    
+    % quantidade maxima de matches para gerar indexes aleatorios até este
+    % valor
     max_points_size = size(matches_a, 1);
+    
+    % probabilidade de que pelo menos uma amostra aleatoria é livre de
+    % outliers
     p = 0.99;
+    
+    % porcentagem de outlier (só é conhecido a taxa do Mount Rushmore)
     outlier_ratio = 0.3;
+    
+    % quantidade de iterações baseada na fórmula, porém é necessário
+    % conhecer a taxa de outlier
     number_of_iterations = log(1 - p) / log(1-(1 - outlier_ratio) ^ sampled_points);
 
-    for i = 1:number_of_iterations
+    % laço externo do RANSAC, apesar da formula é utilizado uma quantidade
+    % fixa de iterações, pois não sabemos a taxa de outliers de todas as
+    % imagens
+    for i = 1:1000
+      % pega indexes aleatorios dentro do intervalo dos matches
       random_points = randperm(max_points_size, sampled_points);
       
-
+      % pega os pontos aleatorios do matche a
       points_random_a  = matches_a(random_points, :);
+      
+      % pega os pontos aleatorios do matche b
       points_random_b  = matches_b(random_points, :);
-
+      
+      % estima a matriz fundamental com a amostra gerada randomicamente
       Temp_Fmatrix = estimate_fundamental_matrix(points_random_a, points_random_b);
+      
+      % declaração dos inliers preenchendo com zeros
       inliers = zeros(max_points_size,1);
+      
+      % laço interno para calcular o erro com a matriz fundamental
+      % obtida
       for j = 1:max_points_size
+          % transposta do matche a mais a coordenada homogenea
           matrix_A = [matches_a(j,:), 1]';
+          
+          % adiciona a coordenada homogenea no matche b
           matrix_B = [matches_b(j,:), 1];
+          
+          % calcula o erro 
           err = matrix_B * Temp_Fmatrix * matrix_A;
           
-          if abs(err) < threshold
-              inliers(j) = 1;
-          end
-
+          % verifica se o erro é menor que o threshold definido se sim
+          % coloca 1 no array com o index do matche "correto"
+          inliers(j) = abs(err) < threshold;
       end
-
+      
+      % verifica se a quantidade de inliers calculada é maior que a
+      % quantidade de inliers da iteração anterior
       if sum(inliers) > size(inliers_a,1)
+        % a melhor matriz fundamental recebe a nova melhor matriz
+        % fundamental
         Best_Fmatrix = Temp_Fmatrix;
-        inliers_a = matches_a(find(inliers),:);
-        index_a = find(inliers);
-        sum(inliers)
-        inliers_b = matches_b(find(inliers),:);
         
+        % insere na matriz de inliers os 
+        inliers_a = matches_a(find(inliers),:);
+        
+        %
+        index_a = find(inliers);
+        
+        %
+        inliers_b = matches_b(find(inliers),:);
       end
     end
 
-%     Best_Fmatrix = estimate_fundamental_matrix(matches_a(1:10,:), matches_b(1:10,:));
-%     inliers_a = matches_a(1:30,:);
-%     inliers_b = matches_b(1:30,:);
 end
 
