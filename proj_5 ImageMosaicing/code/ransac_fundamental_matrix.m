@@ -28,7 +28,7 @@ function [ Best_Fmatrix, inliers_ind] = ransac_fundamental_matrix(matches_a, mat
     sampled_points = 4;
     
     % limite escolhido empiricamente
-    threshold = 5;
+    threshold = 0.01;
     
     % quantidade maxima de matches para gerar indexes aleatorios até este
     % valor
