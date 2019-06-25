@@ -18,18 +18,72 @@ if nargin < 9
 end
 
 % original feature matches
-N = size(y1, 1);
-
-
-
-
 
 
 %% PUT YOUR CODE HERE %%
-m = [x1,y1];
-p = [x2,y2];
-[H, inlier_ind] = ransac_fundamental_matrix(m,p);
+% declaracao da matriz de inliers para executar o if no primeiro caso
+inlier_ind = [0,0];
 
+% quantidade de pontos aleatorios que serao utilizados
+sampled_points = 4;
+
+% limite escolhido empiricamente
+threshold = 0.01;
+
+% quantidade maxima de matches para gerar indexes aleatorios até este
+% valor
+N = size(x1, 1);
+
+% laço externo do RANSAC
+for i = 1:10000
+  % pega indexes aleatorios dentro do intervalo dos matches
+  random_points = randperm(N, sampled_points);
+
+  % pega os pontos aleatorios dos matches da imagem 1
+  x1_random = x1(random_points);
+  y1_random = y1(random_points);
+  % pega os pontos aleatorios dos matches da imagem 2
+  x2_random = x2(random_points);
+  y2_random = y2(random_points);
+
+  % estima a homografia com a amostra gerada randomicamente
+  H_temp = est_homography(x1_random, y1_random, x2_random, y2_random);
+
+  % declaração dos inliers preenchendo com zeros
+  inliers = zeros(N,1);
+
+  % função que aplica a homografia calculada anteriormente
+  [x_correspondente, y_correspondente] = apply_homography(H_temp, x2, y2);
+
+
+  % laço interno para calcular o erro
+  for j = 1:N
+      %
+      b = [x_correspondente(j); y_correspondente(j)];
+      
+      %
+      a = [x1(j); y1(j)];
+      
+      %
+      sampson_error = sum((a-b).^2);
+      
+      % verifica se o erro é menor que o threshold definido se sim
+      % coloca 1 no array com o index do matche "correto"
+      inliers(j) = abs(sampson_error) < threshold;
+
+  end
+
+  % verifica se a quantidade de inliers calculada é maior que a
+  % quantidade de inliers da iteração anterior
+  if sum(inliers) > size(inlier_ind,1)
+    % salva a melhor a homografia
+    H = H_temp;
+
+    % pega o indice dos inliers 
+    inlier_ind = find(inliers);
+
+  end
+end
 
 %% PLACEHOLDER CODE TO PLOT ONLY THE INLIERS WHEN YOU WERE DONE
 % inlier_ind = 1:min(size(y1,1),size(y2,1));
