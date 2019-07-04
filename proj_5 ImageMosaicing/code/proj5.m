@@ -13,11 +13,14 @@ verbose  = true;         % Whether show stitching details
 
 % dataset = "lab";
 % dataset = "church";
-dataset = "balcony";
+% dataset = "balcony";
 % dataset = "glacier";
+dataset = "utf";
+
 % Path
 p         = mfilename('fullpath');
 scriptDir = fileparts(p);
+
 rootDir = fileparts(scriptDir);
 inputDir  = fullfile(rootDir, 'data/', dataset);
 inputFile = fullfile(inputDir, 'images.mat');
@@ -32,8 +35,8 @@ if ~exist(inputFile, 'file')
     images  = cell(imgNum, 1);
     for i = 1 : imgNum
         images{i} = imread(imgInfo(i).name);
-         images{i} = imresize(images{i}, 1/2); % uncommend and change the following lines to produce adequate inputs
-%          images{i} = imrotate(images{i}, -90);
+         images{i} = imresize(images{i}, 3/5); % uncommend and change the following lines to produce adequate inputs
+%         images{i} = imrotate(images{i}, -90);
 %         images{i} = flipdim(images{i}, 2);
 %         images{i} = flipdim(images{i}, 1);
     end

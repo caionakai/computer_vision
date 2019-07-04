@@ -28,7 +28,7 @@ inlier_ind = [0,0];
 sampled_points = 4;
 
 % limite escolhido empiricamente
-threshold = 0.01;
+threshold = 0.5;
 
 % quantidade maxima de matches para gerar indexes aleatorios até este
 % valor
@@ -113,7 +113,7 @@ subplot(2,1,2);
 imshow([padarray(im1,dh1,'post') padarray(im2,dh2,'post')]);
 delta = size(im1,2);
 line([x1(inlier_ind)'; x2(inlier_ind)' + delta], [y1(inlier_ind)'; y2(inlier_ind)']);
-title(sprintf('%d (%.2f%%) inliner matches out of %d', size(inlier_ind,2), 100*size(inlier_ind,2)/N, N));
+title(sprintf('%d (%.2f%%) inliner matches out of %d', size(inlier_ind,1), 100*size(inlier_ind,1)/N, N));
 axis image off;
 drawnow;
 
