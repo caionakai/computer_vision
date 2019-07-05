@@ -25,10 +25,10 @@ end
 inlier_ind = [0,0];
 
 % quantidade de pontos aleatorios que serao utilizados
-sampled_points = 8;
+sampled_points = 4;
 
 % limite escolhido empiricamente
-threshold = 5;
+threshold = 0.5;
 
 % quantidade maxima de matches para gerar indexes aleatorios até este
 % valor
@@ -49,13 +49,30 @@ for i = 1:10000
   % estima a homografia com a amostra gerada randomicamente
   H_temp = est_homography(x1_random, y1_random, x2_random, y2_random);
 
+  % declaração dos inliers preenchendo com zeros
+  inliers = zeros(N,1);
+
   % função que aplica a homografia calculada anteriormente
   [x_correspondente, y_correspondente] = apply_homography(H_temp, x2, y2);
 
 
-  % calcula o erro e verifica (para todos os pontos), se o erro é menor que o threshold definido 
-  inliers = ((x_correspondente - x1).^2 +(y_correspondente - y1).^2 ) < threshold;
-  
+  % laço interno para calcular o erro
+  for j = 1:N
+      % 
+      b = [x_correspondente(j); y_correspondente(j)];
+      
+      %
+      a = [x1(j); y1(j)];
+      
+      %
+      error = sum((a-b).^2);
+      
+      % verifica se o erro é menor que o threshold definido se sim
+      % coloca 1 no array com o index do matche "correto"
+      inliers(j) = abs(error) < threshold;
+
+  end
+
   % verifica se a quantidade de inliers calculada é maior que a
   % quantidade de inliers da iteração anterior
   if sum(inliers) > size(inlier_ind,1)
@@ -67,11 +84,6 @@ for i = 1:10000
 
   end
 end
-% recomputa a homografia
-H = est_homography(x1(inlier_ind), y1(inlier_ind), x2(inlier_ind), y2(inlier_ind));
-[x_correspondente, y_correspondente] = apply_homography(H, x2, y2);
-inliers = ((x_correspondente - x1).^2 +(y_correspondente - y1).^2 ) < threshold;
-inlier_ind = find(inliers)
 
 %% PLACEHOLDER CODE TO PLOT ONLY THE INLIERS WHEN YOU WERE DONE
 % inlier_ind = 1:min(size(y1,1),size(y2,1));
@@ -85,7 +97,7 @@ end
 
 dh1 = max(size(im2,1)-size(im1,1),0);
 dh2 = max(size(im1,1)-size(im2,1),0);
-close all;
+
 h = figure(1)
 
 % Original Matches
