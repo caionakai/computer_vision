@@ -71,7 +71,7 @@ end
 H = est_homography(x1(inlier_ind), y1(inlier_ind), x2(inlier_ind), y2(inlier_ind));
 [x_correspondente, y_correspondente] = apply_homography(H, x2, y2);
 inliers = ((x_correspondente - x1).^2 +(y_correspondente - y1).^2 ) < threshold;
-inlier_ind = find(inliers)
+inlier_ind = find(inliers);
 
 %% PLACEHOLDER CODE TO PLOT ONLY THE INLIERS WHEN YOU WERE DONE
 % inlier_ind = 1:min(size(y1,1),size(y2,1));
